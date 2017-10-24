@@ -1,9 +1,12 @@
-package com.example.android.swedenmap;
+package com.example.android.swedenmap.ui.home;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.android.swedenmap.R;
+import com.example.android.swedenmap.ui.base.BaseActivity;
+
+public class CityActivity extends BaseActivity implements CityView{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
