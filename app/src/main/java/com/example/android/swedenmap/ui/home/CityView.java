@@ -6,4 +6,6 @@ import com.example.android.swedenmap.ui.base.BaseView;
 
 @StateStrategyType(SingleStateStrategy.class)
 public interface CityView extends BaseView {
+
+    void showData();
 }
