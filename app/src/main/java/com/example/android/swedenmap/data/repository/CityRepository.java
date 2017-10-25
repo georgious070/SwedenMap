@@ -5,41 +5,50 @@ import com.example.android.swedenmap.ui.home.CityAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+
+import javax.inject.Inject;
 
 public class CityRepository {
 
-    private ArrayList<ArrayList<Object>> listOfcities;
+    private ArrayList<City> listOfcities;
+    private ArrayList<City> citiesData;
 
+    @Inject
     public CityRepository() {
-
+        listOfcities = new ArrayList<>();
+        citiesData = new ArrayList<>();
     }
 
-    void getData() {
-        if(listOfcities.size() == 0){
+    public ArrayList<City> getData() {
+        if (listOfcities.size() == 0) {
             setCities();
         }
 
-
         CityFileAsyncTask cityFileAsyncTask = new CityFileAsyncTask();
-        cityFileAsyncTask.execute(getListOfcities());
+        City[] cities = new City[getListOfcities().size()];
+        for(int i = 0; i<getListOfcities().size(); i++){
+            cities[i] = getListOfcities().get(i);
+        }
+        try {
+            cityFileAsyncTask.execute(cities).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
+        return citiesData;
     }
 
-    public final void setCities() {
-        ArrayList<Object> helsinbourg = new ArrayList<>(Arrays.asList("Helsinbourg", 56.03, 12.43));
-        ArrayList<Object> malmo = new ArrayList<>(Arrays.asList("Malmo", 55.36, 13.02));
-        ArrayList<Object> ystad = new ArrayList<>(Arrays.asList("Ystad", 55.25, 13.50));
-        ArrayList<Object> trelleborg = new ArrayList<>(Arrays.asList("Trelleborg", 55.22, 13.09));
-        ArrayList<Object> lund = new ArrayList<>(Arrays.asList("Lund", 55.42, 13.09));
+    private void setCities() {
 
-        listOfcities.add(helsinbourg);
-        listOfcities.add(malmo);
-        listOfcities.add(ystad);
-        listOfcities.add(trelleborg);
-        listOfcities.add(lund);
+        listOfcities.add(new City("Helsinbourg", 56.03, 12.43));
+        listOfcities.add(new City("Malmo", 55.36, 13.02));
+        listOfcities.add(new City("Ystad", 55.25, 13.50));
+        listOfcities.add(new City("Trelleborg", 55.22, 13.09));
+        listOfcities.add(new City("Lund", 55.42, 13.09));
     }
 
-    public ArrayList<ArrayList<Object>> getListOfcities() {
+    private ArrayList<City> getListOfcities() {
         return listOfcities;
     }
 }

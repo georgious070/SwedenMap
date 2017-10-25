@@ -12,6 +12,7 @@ import dagger.Component;
 @Component(modules = {AppModule.class})
 public interface AppComponent {
 
-    void inject (App app);
-    void inject (CityPresenter cityPresenter);
+    void inject(App app);
+
+    void inject(CityPresenter cityPresenter);
 }

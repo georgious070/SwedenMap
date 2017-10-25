@@ -1,10 +1,12 @@
 package com.example.android.swedenmap.data.repository.threads;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.example.android.swedenmap.App;
 import com.example.android.swedenmap.Utils.Constants;
+import com.example.android.swedenmap.data.repository.City;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,53 +16,52 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CityFileAsyncTask
-        extends AsyncTask<ArrayList<ArrayList<Object>>, Void, ArrayList<ArrayList<Object>>> {
+        extends AsyncTask<City, Void, ArrayList<City>> {
 
     private File file;
     private FileOutputStream fileOutputStream;
     private FileInputStream fileInputStream;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private ArrayList<ArrayList<Object>> listOfCitiesAndCoordinates;
+    private ArrayList<City> listOfCitiesAndCoordinates;
 
     @Override
-    protected ArrayList<ArrayList<Object>> doInBackground(ArrayList<ArrayList<Object>>... arrayLists) {
+    protected ArrayList<City> doInBackground(City... cities) {
 
-        if (!file.exists()) {
-            file = new File(Constants.FILE_NAME);
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        listOfCitiesAndCoordinates = new ArrayList<>();
 
-        if (file.length() == 0) {
-            try {
-                fileOutputStream = new FileOutputStream(file);
-                objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(arrayLists);
-                fileOutputStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        file = new File(App.getApp().getFilesDir(), Constants.FILE_NAME);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         try {
-            fileInputStream = new FileInputStream(file);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            listOfCitiesAndCoordinates = (ArrayList<ArrayList<Object>>) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            fileOutputStream = App.getApp().openFileOutput(Constants.FILE_NAME, Context.MODE_WORLD_WRITEABLE);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(cities);
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
-        return listOfCitiesAndCoordinates;
+
+        try {
+            fileInputStream = App.getApp().openFileInput(Constants.FILE_NAME);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
