@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class CityActivity extends BaseActivity implements CityView{
 
     private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
