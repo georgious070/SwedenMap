@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 public class CityRepository {
 
-
     private ArrayList<City> citiesData;
 
     @Inject
@@ -29,6 +28,4 @@ public class CityRepository {
         }
         return citiesData;
     }
-
-
 }

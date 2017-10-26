@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.swedenmap.R;
+import com.example.android.swedenmap.data.repository.City;
 
 import org.w3c.dom.Text;
 
@@ -15,10 +16,12 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
-    private final List<String> cityList;
+    private final List<City> cityList;
+    private OnCityClickListener cityClickListener;
 
-    public CityAdapter() {
-        cityList = new ArrayList<>();
+    public CityAdapter(OnCityClickListener cityClickListener) {
+        this.cityList = new ArrayList<>();
+        this.cityClickListener = cityClickListener;
     }
 
     @Override
@@ -30,7 +33,13 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.cityName.setText(cityList.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cityClickListener.onClickCity(cityList);
+            }
+        });
+        holder.cityName.setText(cityList.get(position).getName());
     }
 
     @Override
@@ -38,10 +47,15 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         return cityList.size();
     }
 
-    public void setData(List<String> cityList) {
+    public void setData(List<City> cityList) {
         this.cityList.clear();
         this.cityList.addAll(cityList);
         notifyDataSetChanged();
+    }
+
+    public interface OnCityClickListener {
+
+        void onClickCity(List<City> cityList);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

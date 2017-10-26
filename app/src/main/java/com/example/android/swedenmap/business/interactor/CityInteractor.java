@@ -20,15 +20,15 @@ public class CityInteractor {
         this.citiesNames = new ArrayList<>();
     }
 
-    public List<String> getData() {
-        return getCitiesNames();
+    public List<City> getData() {
+        return cityRepository.getData();
     }
 
-    public List<String> getCitiesNames() {
-        List<City> cities = cityRepository.getData();
-        for (int i = 0; i < cities.size(); i++) {
-            citiesNames.add(cities.get(i).getName());
-        }
-        return citiesNames;
-    }
+//    public List<String> getCitiesNames() {
+//        List<City> cities = cityRepository.getData();
+//        for (int i = 0; i < cities.size(); i++) {
+//            citiesNames.add(cities.get(i).getName());
+//        }
+//        return citiesNames;
+//    }
 }
