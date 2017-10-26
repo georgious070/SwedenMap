@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.swedenmap.R;
-import com.example.android.swedenmap.data.repository.City;
-
-import org.w3c.dom.Text;
+import com.example.android.swedenmap.data.City;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +51,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public interface OnCityClickListener {
-
+    interface OnCityClickListener {
         void onClickCity(List<City> cityList);
     }
 

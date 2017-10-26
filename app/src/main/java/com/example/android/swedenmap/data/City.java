@@ -1,4 +1,4 @@
-package com.example.android.swedenmap.data.repository;
+package com.example.android.swedenmap.data;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -15,7 +15,7 @@ public class City implements Parcelable, Serializable {
     private double lat;
     private double lng;
 
-    public City(String name, double lat, double lng){
+    public City(String name, double lat, double lng) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
