@@ -1,6 +1,12 @@
 package com.example.android.swedenmap.data.repository;
 
-public class City {
+import android.content.Context;
+
+import java.io.Serializable;
+
+public class City implements Serializable{
+
+    public transient Context context;
 
     private String name;
     private double lat;

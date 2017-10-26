@@ -16,24 +16,26 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CityFileAsyncTask
-        extends AsyncTask<City, Void, ArrayList<City>> {
+        extends AsyncTask<Void, Void, ArrayList<City>> {
 
     private File file;
     private FileOutputStream fileOutputStream;
     private FileInputStream fileInputStream;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
     private ArrayList<City> listOfCitiesAndCoordinates;
+    private ArrayList<City> listOfcities;
 
     @Override
-    protected ArrayList<City> doInBackground(City... cities) {
+    protected ArrayList<City> doInBackground(Void... params) {
 
+        listOfcities = new ArrayList<>();
         listOfCitiesAndCoordinates = new ArrayList<>();
+        setCities();
 
-        file = new File(App.getApp().getFilesDir(), Constants.FILE_NAME);
+        file = new File(App.getApp().getBaseContext().getFilesDir(), Constants.FILE_NAME);
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -41,9 +43,9 @@ public class CityFileAsyncTask
         }
 
         try {
-            fileOutputStream = App.getApp().openFileOutput(Constants.FILE_NAME, Context.MODE_WORLD_WRITEABLE);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(cities);
+            fileOutputStream = App.getApp().getBaseContext().openFileOutput(Constants.FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(getListOfcities());
             fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,17 +53,25 @@ public class CityFileAsyncTask
 
         try {
             fileInputStream = App.getApp().openFileInput(Constants.FILE_NAME);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            objectInputStream.readObject();
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            listOfCitiesAndCoordinates = (ArrayList<City>) (objectInputStream.readObject());
+            fileInputStream.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                fileInputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-        return null;
+
+        return listOfCitiesAndCoordinates;
+    }
+
+    private void setCities() {
+        listOfcities.add(new City("Helsinbourg", 56.03, 12.43));
+        listOfcities.add(new City("Malmo", 55.36, 13.02));
+        listOfcities.add(new City("Ystad", 55.25, 13.50));
+        listOfcities.add(new City("Trelleborg", 55.22, 13.09));
+        listOfcities.add(new City("Lund", 55.42, 13.09));
+    }
+
+    private ArrayList<City> getListOfcities() {
+        return listOfcities;
     }
 }
