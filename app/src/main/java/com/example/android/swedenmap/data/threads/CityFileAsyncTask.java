@@ -1,23 +1,19 @@
-package com.example.android.swedenmap.data.repository.threads;
+package com.example.android.swedenmap.data.threads;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.example.android.swedenmap.App;
 import com.example.android.swedenmap.Utils.Constants;
-import com.example.android.swedenmap.data.repository.City;
+import com.example.android.swedenmap.data.City;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CityFileAsyncTask
         extends AsyncTask<Void, Void, ArrayList<City>> {
@@ -45,7 +41,7 @@ public class CityFileAsyncTask
         try {
             fileOutputStream = App.getApp().getBaseContext().openFileOutput(Constants.FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(getListOfcities());
+            objectOutputStream.writeObject(getListOfCities());
             fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,7 +67,7 @@ public class CityFileAsyncTask
         listOfcities.add(new City("Lund", 55.713409, 13.195019));
     }
 
-    private ArrayList<City> getListOfcities() {
+    private ArrayList<City> getListOfCities() {
         return listOfcities;
     }
 }

@@ -1,10 +1,8 @@
-package com.example.android.swedenmap.data.repository;
+package com.example.android.swedenmap.data;
 
-import com.example.android.swedenmap.data.repository.threads.CityFileAsyncTask;
-import com.example.android.swedenmap.ui.home.CityAdapter;
+import com.example.android.swedenmap.data.threads.CityFileAsyncTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
@@ -19,10 +17,9 @@ public class CityRepository {
     }
 
     public ArrayList<City> getData() {
-
         CityFileAsyncTask cityFileAsyncTask = new CityFileAsyncTask();
         try {
-           citiesData.addAll(cityFileAsyncTask.execute().get());
+            citiesData.addAll(cityFileAsyncTask.execute().get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

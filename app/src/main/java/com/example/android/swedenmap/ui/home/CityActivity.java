@@ -5,11 +5,10 @@ import android.support.v7.widget.RecyclerView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.android.swedenmap.R;
-import com.example.android.swedenmap.data.repository.City;
+import com.example.android.swedenmap.data.City;
 import com.example.android.swedenmap.ui.base.BaseActivity;
 import com.example.android.swedenmap.ui.map.MapsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CityActivity extends BaseActivity implements CityView, CityAdapter.OnCityClickListener {
