@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Camera;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.android.swedenmap.R;
 import com.example.android.swedenmap.data.repository.City;
@@ -19,7 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -29,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static Intent getIntent(Context context, List<String> cityName) {
         Intent intent = new Intent(context, MapsActivity.class);
-        intent.putExtra(KEY , (Serializable) cityName);
+        intent.putExtra(KEY, (Serializable) cityName);
         return intent;
     }
 
@@ -73,21 +79,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 title("Malmo").
                 draggable(false));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(malmo));
+        List<LatLng> markersLatLng = new ArrayList<>();
+        markersLatLng.add(malmo);
+        markersLatLng.add(helsinbourg);
 
-        Marker centr = mMap.addMarker(new MarkerOptions().position(googleMap.getCameraPosition().target));
-
-        final double[] k = {0};
-        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+        googleMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
             @Override
-            public void onCameraMove() {
+            public void onCameraMoveCanceled() {
+                findNeighborCirtToCenterMarker(markersLatLng, googleMap.getCameraPosition().target);
 
-                centr.setPosition(googleMap.getCameraPosition().target);
-                k[0] = SphericalUtil.computeDistanceBetween(malmo, googleMap.getCameraPosition().target);
             }
         });
     }
 
-    void findNeighborCirtToCenterMarker(){
+    void findNeighborCirtToCenterMarker(List<LatLng> markersLatLng, LatLng cameraPosition) {
+        double minDistance = SphericalUtil.computeDistanceBetween(markersLatLng.get(0), cameraPosition);
+        for (int i = 0; i < markersLatLng.size(); i++) {
+            if (minDistance > SphericalUtil.computeDistanceBetween(markersLatLng.get(i), cameraPosition)) {
+                minDistance = SphericalUtil.computeDistanceBetween(markersLatLng.get(i), cameraPosition);
+            }
+        }
 
+        Toast.makeText(this, "Min Distance to " + minDistance/1000, Toast.LENGTH_SHORT).show();
     }
 }
