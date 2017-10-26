@@ -64,11 +64,11 @@ public class CityFileAsyncTask
     }
 
     private void setCities() {
-        listOfcities.add(new City("Helsinbourg", 56.03, 12.43));
-        listOfcities.add(new City("Malmo", 55.36, 13.02));
-        listOfcities.add(new City("Ystad", 55.25, 13.50));
-        listOfcities.add(new City("Trelleborg", 55.22, 13.09));
-        listOfcities.add(new City("Lund", 55.42, 13.09));
+        listOfcities.add(new City("Helsinbourg", 56.049254, 12.780285));
+        listOfcities.add(new City("Malmo", 55.597194, 13.013744));
+        listOfcities.add(new City("Ystad", 55.431463, 13.816900));
+        listOfcities.add(new City("Trelleborg", 55.377216, 13.154178));
+        listOfcities.add(new City("Lund", 55.713409, 13.195019));
     }
 
     private ArrayList<City> getListOfcities() {

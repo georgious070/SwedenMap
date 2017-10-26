@@ -20,6 +20,6 @@ public class CityPresenter extends BasePresenter<CityView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getViewState().showData(cityInteractor.getCitiesNames());
+        getViewState().showData(cityInteractor.getData());
     }
 }

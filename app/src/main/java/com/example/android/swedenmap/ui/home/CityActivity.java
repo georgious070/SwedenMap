@@ -30,12 +30,12 @@ public class CityActivity extends BaseActivity implements CityView, CityAdapter.
     }
 
     @Override
-    public void showData(List<String> cityList) {
+    public void showData(List<City> cityList) {
         cityAdapter.setData(cityList);
     }
 
     @Override
-    public void onClickCity(List<String> cities) {
-        startActivity(MapsActivity.getIntent(this, cities));
+    public void onClickCity(List<City> cityList) {
+        startActivity(MapsActivity.getIntent(this, cityList));
     }
 }
