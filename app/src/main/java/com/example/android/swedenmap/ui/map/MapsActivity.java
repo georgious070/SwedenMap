@@ -2,6 +2,8 @@ package com.example.android.swedenmap.ui.map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Camera;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -12,7 +14,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -56,8 +60,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng helsinbourg = new LatLng(56.03, 12.43);
+        mMap.addMarker(new MarkerOptions().
+                position(helsinbourg).
+                title("Helsinbourg").
+                draggable(false));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(helsinbourg));
+
+        LatLng malmo = new LatLng(55.36, 13.02);
+        mMap.addMarker(new MarkerOptions().
+                position(malmo).
+                title("Malmo").
+                draggable(false));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(malmo));
+
+        Marker centr = mMap.addMarker(new MarkerOptions().position(googleMap.getCameraPosition().target));
+
+        final double[] k = {0};
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+
+                centr.setPosition(googleMap.getCameraPosition().target);
+                k[0] = SphericalUtil.computeDistanceBetween(malmo, googleMap.getCameraPosition().target);
+            }
+        });
+    }
+
+    void findNeighborCirtToCenterMarker(){
+
     }
 }
