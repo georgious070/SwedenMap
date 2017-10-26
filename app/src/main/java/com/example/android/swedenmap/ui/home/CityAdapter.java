@@ -16,9 +16,11 @@ import java.util.List;
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     private final List<String> cityList;
+    private OnCityClickListener cityClickListener;
 
-    public CityAdapter() {
-        cityList = new ArrayList<>();
+    public CityAdapter(OnCityClickListener cityClickListener) {
+        this.cityList = new ArrayList<>();
+        this.cityClickListener = cityClickListener;
     }
 
     @Override
@@ -30,6 +32,12 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cityClickListener.onClickCity(cityList);
+            }
+        });
         holder.cityName.setText(cityList.get(position));
     }
 
@@ -42,6 +50,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         this.cityList.clear();
         this.cityList.addAll(cityList);
         notifyDataSetChanged();
+    }
+
+    public interface OnCityClickListener {
+
+        void onClickCity(List<String> cities);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
